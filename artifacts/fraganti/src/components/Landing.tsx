@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Menu, X, Search, ShoppingBag, ChevronRight, Phone,
   MessageCircle, ArrowDown, MapPin, Mail, Clock,
-  Instagram, Youtube, Check, Droplets, TreePine,
-  Sparkles, Citrus, Star
+  Instagram, Youtube, Check
 } from "lucide-react";
 
 // Intersection Observer Hook for fade-in animations
@@ -57,32 +56,10 @@ const PRODUCTS = [
   { id: 1, name: "Light Blue", notes: "cedro siciliano, manzana, jazmín, bambú, almizcle blanco", price: "$335.000", family: "Fresca", img: "prod-light-blue.jpg", brand: "Dolce & Gabbana" },
   { id: 2, name: "Eros EDP Tester", notes: "menta fresca, limón verde, manzana, tonka, vainilla, cedro", price: "$300.000", family: "Oriental", img: "prod-eros.jpg", brand: "Versace", isNew: true },
   { id: 3, name: "Toy Boy", notes: "salvia aromática, iris, cardamomo, patchouli, ámbar dorado", price: "$230.000", family: "Oriental", img: "prod-toyboy.jpg", brand: "Moschino" },
-];
-
-const FAMILIES = [
-  { name: "Floral", notes: "Rosa, Jazmín, Peonía", icon: <Sparkles className="w-8 h-8 text-[#C9A96E]" /> },
-  { name: "Amaderado", notes: "Cedro, Sándalo, Vetiver", icon: <TreePine className="w-8 h-8 text-[#C9A96E]" /> },
-  { name: "Cítrico", notes: "Bergamota, Pomelo, Limón", icon: <Citrus className="w-8 h-8 text-[#C9A96E]" /> },
-  { name: "Oriental", notes: "Oud, Ámbar, Incienso", icon: <Droplets className="w-8 h-8 text-[#C9A96E]" /> }
-];
-
-const QUIZ_QUESTIONS = [
-  {
-    question: "¿Cómo describes tu estilo?",
-    options: ["Elegante", "Casual", "Atrevido", "Romántico"]
-  },
-  {
-    question: "¿Qué momento describe tu uso ideal?",
-    options: ["Cita romántica", "Reunión de trabajo", "Fiesta", "Día casual"]
-  },
-  {
-    question: "¿Qué sensación buscas transmitir?",
-    options: ["Fresco y limpio", "Cálido y sensual", "Misterioso", "Energizante"]
-  },
-  {
-    question: "¿Qué nota olfativa prefieres?",
-    options: ["Floral", "Oriental", "Cítrico", "Amaderado"]
-  }
+  { id: 4, name: "Odyssey Go Mango", notes: "mango tropical, bergamota, jazmín, cedro, almizcle", price: "$235.000", family: "Fresca", img: "prod-odyssey-mango.jpg", brand: "Armaf" },
+  { id: 5, name: "Odyssey Bahamas", notes: "cítricos, piña, coco, sándalo blanco, almizcle marino", price: "$245.000", family: "Fresca", img: "prod-odyssey-bahamas.jpg", brand: "Armaf", isNew: true },
+  { id: 6, name: "Odyssey Homme White", notes: "bergamota, lavanda, cardamomo, sándalo, patchouli", price: "$220.000", family: "Amaderada", img: "prod-odyssey-white.jpg", brand: "Armaf" },
+  { id: 7, name: "Pour Homme", notes: "bergamota, yuzu, patchouli, cedro, almizcle blanco", price: "$290.000", family: "Fresca", img: "prod-issey-miyake.jpg", brand: "Issey Miyake" },
 ];
 
 export function Landing() {
@@ -90,10 +67,6 @@ export function Landing() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("Todos");
-
-  const [quizStep, setQuizStep] = useState(0);
-  const [quizAnswers, setQuizAnswers] = useState<string[]>([]);
-  const [quizAnimating, setQuizAnimating] = useState(false);
 
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "success">("idle");
@@ -113,25 +86,6 @@ export function Landing() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleQuizAnswer = (answer: string) => {
-    if (quizAnimating) return;
-    setQuizAnimating(true);
-    setTimeout(() => {
-      setQuizAnswers([...quizAnswers, answer]);
-      setQuizStep(prev => prev + 1);
-      setQuizAnimating(false);
-    }, 400);
-  };
-
-  const resetQuiz = () => {
-    setQuizAnimating(true);
-    setTimeout(() => {
-      setQuizStep(0);
-      setQuizAnswers([]);
-      setQuizAnimating(false);
-    }, 400);
-  };
 
   const isFormValid = formState.name.length > 2 && formState.email.includes("@") && formState.message.length > 5;
 
@@ -253,12 +207,19 @@ export function Landing() {
       {/* LOADING SCREEN */}
       {isLoading && (
         <div className="loader-container fixed inset-0 z-[100] bg-[#121212] flex items-center justify-center">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 flex items-center justify-center">
-             <div className="w-[300px] h-[300px] bg-[#C9A96E] rounded-full blur-[100px] loader-mist"></div>
+          <div className="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center">
+            <div className="w-[500px] h-[500px] bg-[#C9A96E] rounded-full blur-[140px] opacity-10 loader-mist"></div>
           </div>
-          <h1 className="loader-logo font-serif text-4xl md:text-6xl text-[#F8F5F2] tracking-[0.2em] font-light z-10 relative">
-            FRAGANTI
-          </h1>
+          <div className="flex flex-col items-center gap-6 z-10 relative loader-logo">
+            <img
+              src="/logo.jpg"
+              alt="Fraganti"
+              className="w-40 md:w-56 object-contain"
+              style={{ mixBlendMode: "screen", filter: "brightness(1.15) contrast(0.95)" }}
+            />
+            <div className="h-px w-20 bg-[#C9A96E] opacity-50"></div>
+            <span className="font-poppins text-[10px] text-[#C9A96E] tracking-[0.5em] font-light uppercase">Perfumes Originales</span>
+          </div>
         </div>
       )}
 
@@ -274,18 +235,14 @@ export function Landing() {
           </button>
 
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3">
-            <img src="/logo.jpg" alt="Fraganti logo" className="h-10 w-auto rounded-sm object-contain" />
-            <span className={`font-serif text-2xl md:text-3xl font-medium tracking-[0.15em] transition-colors duration-300 ${isScrolled ? "text-[#C9A96E]" : "text-[#C9A96E] md:text-[#F8F5F2]"}`}>
-              FRAGANTI
-            </span>
+          <a href="#" className={`font-serif text-2xl md:text-3xl font-medium tracking-[0.15em] transition-colors duration-300 ${isScrolled ? "text-[#C9A96E]" : "text-[#C9A96E] md:text-[#F8F5F2]"}`}>
+            FRAGANTI
           </a>
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center space-x-8">
             <a href="#coleccion" className={`text-sm tracking-widest hover:text-[#C9A96E] transition-colors ${isScrolled ? "text-[#F8F5F2]" : "text-[#F8F5F2]"}`}>COLECCIÓN</a>
             <a href="#decants" className={`text-sm tracking-widest hover:text-[#C9A96E] transition-colors ${isScrolled ? "text-[#F8F5F2]" : "text-[#F8F5F2]"}`}>DECANTS</a>
-            <a href="#test" className={`text-sm tracking-widest hover:text-[#C9A96E] transition-colors ${isScrolled ? "text-[#F8F5F2]" : "text-[#F8F5F2]"}`}>TEST OLFATIVO</a>
             <a href="#contacto" className={`text-sm tracking-widest hover:text-[#C9A96E] transition-colors ${isScrolled ? "text-[#F8F5F2]" : "text-[#F8F5F2]"}`}>CONTACTO</a>
           </div>
 
@@ -306,7 +263,6 @@ export function Landing() {
           <div className="flex flex-col p-6 space-y-4">
             <a href="#coleccion" onClick={() => setIsMobileMenuOpen(false)} className="text-[#F8F5F2] text-lg font-serif tracking-wide border-b border-[#333] pb-2">Colección</a>
             <a href="#decants" onClick={() => setIsMobileMenuOpen(false)} className="text-[#F8F5F2] text-lg font-serif tracking-wide border-b border-[#333] pb-2">Decants</a>
-            <a href="#test" onClick={() => setIsMobileMenuOpen(false)} className="text-[#F8F5F2] text-lg font-serif tracking-wide border-b border-[#333] pb-2">Test Olfativo</a>
             <a href="#contacto" onClick={() => setIsMobileMenuOpen(false)} className="text-[#F8F5F2] text-lg font-serif tracking-wide pb-2">Contacto</a>
           </div>
         </div>
@@ -356,8 +312,8 @@ export function Landing() {
             <a href="#coleccion" className="btn-gold px-8 py-4 rounded-sm font-medium tracking-wide w-full sm:w-auto text-sm flex items-center justify-center gap-2">
               EXPLORAR LA COLECCIÓN <ChevronRight size={16} />
             </a>
-            <a href="#test" className="btn-outline-cream px-8 py-4 rounded-sm font-medium tracking-wide w-full sm:w-auto text-sm backdrop-blur-sm">
-              ENCUENTRA TU AROMA
+            <a href="#decants" className="btn-outline-cream px-8 py-4 rounded-sm font-medium tracking-wide w-full sm:w-auto text-sm backdrop-blur-sm">
+              CONOCER DECANTS
             </a>
           </FadeIn>
         </div>
@@ -376,7 +332,7 @@ export function Landing() {
 
             {/* Filters */}
             <div className="flex flex-wrap justify-center gap-3 w-full custom-scrollbar pb-2">
-              {["Todos", "Oriental", "Fresca"].map(filter => (
+              {["Todos", "Oriental", "Fresca", "Amaderada"].map(filter => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
@@ -460,104 +416,6 @@ export function Landing() {
             </h2>
           </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {FAMILIES.map((family, index) => (
-              <FadeIn key={family.name} delay={index * 150} className="bg-[#1C1C1C]/60 backdrop-blur-md border border-[#333] p-8 rounded-lg flex flex-col items-center text-center hover:border-[#C9A96E]/50 transition-colors duration-300">
-                <div className="mb-6 bg-[#2A2A2A] w-16 h-16 rounded-full flex items-center justify-center">
-                  {family.icon}
-                </div>
-                <h3 className="font-serif text-xl text-[#F8F5F2] mb-2">{family.name}</h3>
-                <p className="text-[#A0A0A0] text-sm">{family.notes}</p>
-              </FadeIn>
-            ))}
-          </div>
-
-          <FadeIn delay={600}>
-            <button className="btn-outline-cream px-10 py-4 rounded-sm font-medium tracking-widest text-sm hover:border-[#C9A96E] hover:text-[#C9A96E] hover:bg-transparent">
-              DESCUBRE TU FAMILIA OLFATIVA
-            </button>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* TEST DE PERSONALIDAD OLFATIVA */}
-      <section id="test" className="py-24 px-6 bg-[#F5F5DC]/40 border-y border-[#E5E0D5]">
-        <div className="max-w-4xl mx-auto">
-          <FadeIn>
-            <div className="text-center mb-12">
-              <span className="text-[#C9A96E] text-sm font-semibold tracking-widest uppercase mb-3 block">Test Interactivo</span>
-              <h2 className="font-serif text-4xl md:text-5xl text-[#1A1A1A] mb-4">¿Cuál es tu aroma ideal?</h2>
-              <p className="text-[#5A5A5A] max-w-xl mx-auto">Responde 4 preguntas y encuentra la fragancia perfecta que hable por ti.</p>
-            </div>
-          </FadeIn>
-
-          <div className="bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)] p-8 md:p-12 relative overflow-hidden min-h-[400px] flex flex-col justify-center border border-[#E8E8E8]">
-            {quizStep < 4 ? (
-              <div className={`transition-opacity duration-300 w-full ${quizAnimating ? "opacity-0" : "opacity-100"}`}>
-                <div className="flex justify-between items-center mb-8">
-                  <span className="text-sm font-medium text-[#A0A0A0]">Pregunta {quizStep + 1} de 4</span>
-                  <div className="flex gap-1">
-                    {[0, 1, 2, 3].map(step => (
-                      <div key={step} className={`h-1 w-8 rounded-full ${step <= quizStep ? "bg-[#C9A96E]" : "bg-[#F0F0F0]"}`}></div>
-                    ))}
-                  </div>
-                </div>
-
-                <h3 className="font-serif text-2xl md:text-3xl text-[#1A1A1A] mb-8 text-center">
-                  {QUIZ_QUESTIONS[quizStep].question}
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {QUIZ_QUESTIONS[quizStep].options.map((option, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleQuizAnswer(option)}
-                      className="px-6 py-5 rounded-lg border border-[#E0E0E0] text-left hover:border-[#C9A96E] hover:bg-[#FDFBF7] hover:shadow-sm transition-all group relative overflow-hidden"
-                    >
-                      <span className="relative z-10 font-medium text-[#333] group-hover:text-[#1A1A1A]">{option}</span>
-                      <div className="absolute top-0 right-0 h-full w-1 bg-[#C9A96E] transform translate-x-full group-hover:translate-x-0 transition-transform"></div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className={`transition-all duration-700 ease-out flex flex-col md:flex-row gap-8 items-center ${quizAnimating ? "opacity-0 scale-95 blur-sm" : "opacity-100 scale-100 blur-0"}`}>
-                <div className="w-full md:w-1/2 flex justify-center">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-[#C9A96E] rounded-full blur-[60px] opacity-20"></div>
-                    <img
-                      src={`/images/${quizAnswers[3] === "Fresca" ? "prod-light-blue.jpg" : quizAnswers[3] === "Oriental" ? "prod-eros.jpg" : "prod-toyboy.jpg"}`}
-                      alt="Tu perfume ideal"
-                      className="w-48 h-auto relative z-10 mix-blend-multiply drop-shadow-2xl"
-                    />
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 text-center md:text-left">
-                  <span className="inline-flex items-center gap-2 text-[#C9A96E] text-xs font-semibold tracking-widest uppercase mb-4 bg-[#FDFBF7] px-3 py-1 rounded-full border border-[#C9A96E]/20">
-                    <Star size={12} fill="currentColor" /> Tu Match Perfecto
-                  </span>
-                  <h3 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] mb-2">
-                    {quizAnswers[3] === "Fresca" ? "Light Blue" : quizAnswers[3] === "Oriental" ? "Eros EDP" : "Toy Boy"}
-                  </h3>
-                  <p className="font-serif italic text-[#5A5A5A] mb-6 text-lg">
-                    Basado en tu estilo {quizAnswers[0]?.toLowerCase()} y preferencia {quizAnswers[3]?.toLowerCase()}.
-                  </p>
-                  <p className="text-[#333] text-sm leading-relaxed mb-8">
-                    Esta fragancia captura la esencia que buscas para una {quizAnswers[1]?.toLowerCase()}. Sus notas envuelven con un toque {quizAnswers[2]?.toLowerCase()}, creando un aura inolvidable.
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
-                    <button className="btn-gold px-8 py-4 rounded-sm font-medium tracking-wide text-sm w-full sm:w-auto">
-                      VER PERFUME
-                    </button>
-                    <button onClick={resetQuiz} className="text-[#A0A0A0] text-sm underline hover:text-[#1A1A1A] transition-colors">
-                      Volver a empezar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </section>
 
