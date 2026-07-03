@@ -54,12 +54,9 @@ function FadeIn({ children, delay = 0, className = "", direction = "up" }: { chi
 }
 
 const PRODUCTS = [
-  { id: 1, name: "Oud Noir", notes: "ámbar, oud, sándalo", price: "$85.000", family: "Oriental", img: "fraganti-prod1.jpg", isNew: true },
-  { id: 2, name: "Fleur de Jasmin", notes: "jazmín, rosa, almizcle", price: "$72.000", family: "Floral", img: "fraganti-prod2.jpg" },
-  { id: 3, name: "Aventus Club", notes: "manzana, bergamota, cedro", price: "$95.000", family: "Fresca", img: "fraganti-prod3.jpg" },
-  { id: 4, name: "La Vie Est Belle", notes: "iris, pralinée, vainilla", price: "$78.000", family: "Floral Oriental", img: "fraganti-prod2.jpg" },
-  { id: 5, name: "Terre d'Hermès", notes: "pomelo, pimienta, vetiver", price: "$110.000", family: "Amaderada", img: "fraganti-prod3.jpg", isNew: true },
-  { id: 6, name: "Black Orchid", notes: "orquídea, vainilla, pachulí", price: "$92.000", family: "Oriental", img: "fraganti-prod1.jpg" },
+  { id: 1, name: "Light Blue", notes: "cedro siciliano, manzana, jazmín, bambú, almizcle blanco", price: "$335.000", family: "Fresca", img: "prod-light-blue.jpg", brand: "Dolce & Gabbana" },
+  { id: 2, name: "Eros EDP Tester", notes: "menta fresca, limón verde, manzana, tonka, vainilla, cedro", price: "$300.000", family: "Oriental", img: "prod-eros.jpg", brand: "Versace", isNew: true },
+  { id: 3, name: "Toy Boy", notes: "salvia aromática, iris, cardamomo, patchouli, ámbar dorado", price: "$230.000", family: "Oriental", img: "prod-toyboy.jpg", brand: "Moschino" },
 ];
 
 const FAMILIES = [
@@ -277,8 +274,11 @@ export function Landing() {
           </button>
 
           {/* Logo */}
-          <a href="#" className={`font-serif text-2xl md:text-3xl font-medium tracking-[0.15em] transition-colors duration-300 ${isScrolled ? "text-[#C9A96E]" : "text-[#C9A96E] md:text-[#F8F5F2]"}`}>
-            FRAGANTI
+          <a href="#" className="flex items-center gap-3">
+            <img src="/logo.jpg" alt="Fraganti logo" className="h-10 w-auto rounded-sm object-contain" />
+            <span className={`font-serif text-2xl md:text-3xl font-medium tracking-[0.15em] transition-colors duration-300 ${isScrolled ? "text-[#C9A96E]" : "text-[#C9A96E] md:text-[#F8F5F2]"}`}>
+              FRAGANTI
+            </span>
           </a>
 
           {/* Desktop Links */}
@@ -376,7 +376,7 @@ export function Landing() {
 
             {/* Filters */}
             <div className="flex flex-wrap justify-center gap-3 w-full custom-scrollbar pb-2">
-              {["Todos", "Oriental", "Floral", "Amaderada", "Fresca"].map(filter => (
+              {["Todos", "Oriental", "Fresca"].map(filter => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
@@ -419,6 +419,7 @@ export function Landing() {
 
                 <div className="flex flex-col flex-grow text-center">
                   <span className="text-[#C9A96E] text-xs font-semibold tracking-widest uppercase mb-2">{product.family}</span>
+                  <p className="text-[#A0A0A0] text-xs tracking-widest uppercase mb-1">{(product as any).brand}</p>
                   <h3 className="font-serif text-2xl text-[#1A1A1A] mb-1">{product.name}</h3>
                   <p className="text-[#5A5A5A] text-sm italic mb-4 flex-grow font-serif">{product.notes}</p>
                   <p className="text-[#1A1A1A] font-medium tracking-wide mb-6">{product.price}</p>
@@ -525,7 +526,7 @@ export function Landing() {
                   <div className="relative">
                     <div className="absolute inset-0 bg-[#C9A96E] rounded-full blur-[60px] opacity-20"></div>
                     <img
-                      src={`/images/${quizAnswers[3] === "Floral" ? "fraganti-prod2.jpg" : quizAnswers[3] === "Amaderado" ? "fraganti-prod3.jpg" : "fraganti-prod1.jpg"}`}
+                      src={`/images/${quizAnswers[3] === "Fresca" ? "prod-light-blue.jpg" : quizAnswers[3] === "Oriental" ? "prod-eros.jpg" : "prod-toyboy.jpg"}`}
                       alt="Tu perfume ideal"
                       className="w-48 h-auto relative z-10 mix-blend-multiply drop-shadow-2xl"
                     />
@@ -536,7 +537,7 @@ export function Landing() {
                     <Star size={12} fill="currentColor" /> Tu Match Perfecto
                   </span>
                   <h3 className="font-serif text-3xl md:text-4xl text-[#1A1A1A] mb-2">
-                    {quizAnswers[3] === "Floral" ? "Fleur de Jasmin" : quizAnswers[3] === "Amaderado" ? "Terre d'Hermès" : "Oud Noir"}
+                    {quizAnswers[3] === "Fresca" ? "Light Blue" : quizAnswers[3] === "Oriental" ? "Eros EDP" : "Toy Boy"}
                   </h3>
                   <p className="font-serif italic text-[#5A5A5A] mb-6 text-lg">
                     Basado en tu estilo {quizAnswers[0]?.toLowerCase()} y preferencia {quizAnswers[3]?.toLowerCase()}.
